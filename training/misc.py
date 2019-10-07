@@ -92,12 +92,12 @@ def convert_to_image(image, drange=[0, 1]):
 def save_image(image, filename, drange=[0,1], quality=95):
     #img = convert_to_pil_image(image, drange)
     img = convert_to_image(image, drange)
-    cv2.imwrite(img, filename)
+    cv2.imwrite(filename, img)
 
 def save_image_grid(images, filename, drange=[0,1], grid_size=None):
     #convert_to_pil_image(create_image_grid(images, grid_size), drange).save(filename)
     img = convert_to_image(create_image_grid(images, grid_size), drange)
-    cv2.imwrite(img, filename)
+    cv2.imwrite(filename, img)
 
 #----------------------------------------------------------------------------
 # Locating results.

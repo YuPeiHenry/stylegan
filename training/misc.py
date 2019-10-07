@@ -76,15 +76,27 @@ def convert_to_pil_image(image, drange=[0,1]):
     fmt = 'RGB' if image.ndim == 3 else 'L'
     return PIL.Image.fromarray(image, fmt)
 
+def convert_to_image(image, drange=[0, 1]):
+    assert image.ndim == 2 or image.ndim == 3
+    if image.ndim == 3:
+        if image.shape[0] == 1:
+            image = image[0] # grayscale CHW => HW
+        else:
+            image = image.transpose(1, 2, 0) # CHW -> HWC
+
+    image = adjust_dynamic_range(image, drange, [0,26350])
+    image = np.rint(image).clip(0, 26350).astype(np.uint16)
+    return image
+
 def save_image(image, filename, drange=[0,1], quality=95):
-    img = convert_to_pil_image(image, drange)
-    if '.jpg' in filename:
-        img.save(filename,"JPEG", quality=quality, optimize=True)
-    else:
-        img.save(filename)
+    #img = convert_to_pil_image(image, drange)
+    img = convert_to_image(image, drange)
+    cv2.imwrite(img, filename)
 
 def save_image_grid(images, filename, drange=[0,1], grid_size=None):
-    convert_to_pil_image(create_image_grid(images, grid_size), drange).save(filename)
+    #convert_to_pil_image(create_image_grid(images, grid_size), drange).save(filename)
+    img = convert_to_image(create_image_grid(images, grid_size), drange)
+    cv2.imwrite(img, filename)
 
 #----------------------------------------------------------------------------
 # Locating results.

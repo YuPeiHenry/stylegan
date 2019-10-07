@@ -19,6 +19,7 @@ import numpy as np
 import tensorflow as tf
 import PIL.Image
 import dnnlib.tflib as tflib
+import cv2
 
 from training import dataset
 
@@ -506,7 +507,7 @@ def create_from_images(tfrecord_dir, image_dir, shuffle):
     if len(image_filenames) == 0:
         error('No input images found')
 
-    img = np.asarray(PIL.Image.open(image_filenames[0]))
+    img = cv2.imread(image_filenames[0], -1)
     resolution = img.shape[0]
     channels = img.shape[2] if img.ndim == 3 else 1
     if img.shape[1] != resolution:
@@ -519,7 +520,7 @@ def create_from_images(tfrecord_dir, image_dir, shuffle):
     with TFRecordExporter(tfrecord_dir, len(image_filenames)) as tfr:
         order = tfr.choose_shuffled_order() if shuffle else np.arange(len(image_filenames))
         for idx in range(order.size):
-            img = np.asarray(PIL.Image.open(image_filenames[order[idx]]))
+            img = np.asarray(cv2.imread(image_filenames[order[idx]], -1))
             if channels == 1:
                 img = img[np.newaxis, :, :] # HW => CHW
             else:

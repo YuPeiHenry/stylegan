@@ -51,7 +51,7 @@ class TFRecordDataset:
         self.resolution_log2    = None
         self.shape              = []        # [channel, height, width]
         self.dtype              = 'uint8'
-        self.dynamic_range      = [0, 255]
+        self.dynamic_range      = [0, 26350]
         self.label_file         = label_file
         self.label_size         = None      # [component]
         self.label_dtype        = None
@@ -169,7 +169,7 @@ class TFRecordDataset:
 # Base class for datasets that are generated on the fly.
 
 class SyntheticDataset:
-    def __init__(self, resolution=1024, num_channels=3, dtype='uint8', dynamic_range=[0,255], label_size=0, label_dtype='float32'):
+    def __init__(self, resolution=1024, num_channels=3, dtype='uint8', dynamic_range=[0,26350], label_size=0, label_dtype='float32'):
         self.resolution         = resolution
         self.resolution_log2    = int(np.log2(resolution))
         self.shape              = [num_channels, resolution, resolution]

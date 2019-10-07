@@ -18,6 +18,7 @@ import dnnlib
 
 import config
 from training import dataset
+import cv2
 
 #----------------------------------------------------------------------------
 # Convenience wrappers for pickle that are able to load data produced by
